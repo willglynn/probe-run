@@ -57,6 +57,7 @@ pub(crate) fn target(core: &mut Core, elf: &Elf, active_ram_region: &Option<RamR
 
     loop {
         if let Some(outcome) =
+            // udf {corrupted:true, outcome:probe_run::backtrace::Outcome::Ok, ...}
             check_hard_fault(pc, &elf.vector_table, &mut output, sp, active_ram_region)
         {
             output.outcome = outcome;
@@ -144,6 +145,7 @@ pub(crate) fn target(core: &mut Core, elf: &Elf, active_ram_region: &Option<RamR
     output
 }
 
+// hier unterscheidung udf panic
 fn check_hard_fault(
     pc: u32,
     vector_table: &cortexm::VectorTable,
@@ -158,9 +160,19 @@ fn check_hard_fault(
         );
 
         if overflowed_stack(sp, sp_ram_region) {
+            println!(" !!!!!!!!!!!!!!! in is_hard_fault overflowed_stack");
             return Some(Outcome::StackOverflow);
         } else {
-            return Some(Outcome::HardFault);
+            println!(" !!!!!!!!!!!!!!! in is_hard_fault else"); // landen immer hier
+            if pc == 5190 {
+                println!("!!!!!!! This is an udf !!!!!!!");
+                return Some(Outcome::HardFault);
+            } else if pc == 5232 {
+                println!("!!!!!!! This is a proper panic !!!!!!!");
+                return Some(Outcome::Panic);
+            }
+            // if pc 5190, vector_table: {hard_fault: 5191 }dann udf
+            // panic: pc: 5232 {initial_stack_pointer:537131976, hard_fault:5233}
         }
     }
     None

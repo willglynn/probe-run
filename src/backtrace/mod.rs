@@ -89,7 +89,10 @@ pub(crate) fn print(
 
 /// Target program outcome
 #[derive(Clone, Copy, Debug, PartialEq)]
+
+// hier noch ein panic hinzufuegen
 pub(crate) enum Outcome {
+    Panic,
     HardFault,
     Ok,
     StackOverflow,
@@ -102,8 +105,12 @@ impl Outcome {
             Outcome::StackOverflow => {
                 log::error!("the program has overflowed its stack");
             }
+            Outcome::Panic => {
+                log::error!("!!!!!! The program panicked!");
+            }
+            // both panic and udf end up here
             Outcome::HardFault => {
-                log::error!("the program panicked");
+                log::error!("!!!!!! Getting a UDF error!");
             }
             Outcome::Ok => {
                 log::info!("device halted without error");
@@ -122,6 +129,7 @@ impl From<Outcome> for i32 {
             Outcome::HardFault | Outcome::StackOverflow => signal::SIGABRT,
             Outcome::CtrlC => signal::SIGINT,
             Outcome::Ok => 0,
+            Outcome::Panic => signal::SIGABRT,
         }
     }
 }
