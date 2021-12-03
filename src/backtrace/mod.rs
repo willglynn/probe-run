@@ -106,11 +106,10 @@ impl Outcome {
                 log::error!("the program has overflowed its stack");
             }
             Outcome::Panic => {
-                log::error!("!!!!!! The program panicked!");
+                log::error!("the program panicked");
             }
-            // both panic and udf end up here
             Outcome::HardFault => {
-                log::error!("!!!!!! Getting a UDF error!");
+                log::error!("program hit a hard fault exception");
             }
             Outcome::Ok => {
                 log::info!("device halted without error");
@@ -126,10 +125,9 @@ impl Outcome {
 impl From<Outcome> for i32 {
     fn from(outcome: Outcome) -> i32 {
         match outcome {
-            Outcome::HardFault | Outcome::StackOverflow => signal::SIGABRT,
+            Outcome::HardFault | Outcome::Panic | Outcome::StackOverflow => signal::SIGABRT,
             Outcome::CtrlC => signal::SIGINT,
             Outcome::Ok => 0,
-            Outcome::Panic => signal::SIGABRT,
         }
     }
 }

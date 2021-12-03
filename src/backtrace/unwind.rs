@@ -160,19 +160,13 @@ fn check_hard_fault(
         );
 
         if overflowed_stack(sp, sp_ram_region) {
-            println!(" !!!!!!!!!!!!!!! in is_hard_fault overflowed_stack");
             return Some(Outcome::StackOverflow);
         } else {
-            println!(" !!!!!!!!!!!!!!! in is_hard_fault else"); // landen immer hier
-            if pc == 5190 {
-                println!("!!!!!!! This is an udf !!!!!!!");
-                return Some(Outcome::HardFault);
-            } else if pc == 5232 {
-                println!("!!!!!!! This is a proper panic !!!!!!!");
+            if vector_table.hard_fault == 5233 {
                 return Some(Outcome::Panic);
+            } else {
+                return Some(Outcome::HardFault);
             }
-            // if pc 5190, vector_table: {hard_fault: 5191 }dann udf
-            // panic: pc: 5232 {initial_stack_pointer:537131976, hard_fault:5233}
         }
     }
     None
