@@ -140,7 +140,7 @@ fn stack_overflow_is_reported_as_such() {
 #[test]
 #[serial]
 // this test should not be run by default, as it requires the target hardware to be present
-#[ignore]
+// #[ignore]
 fn panic_is_reported_as_such() {
     let run_result = run("--chip nRF52840_xxAA tests/test_elfs/panic-rzcobs");
 
@@ -155,6 +155,17 @@ fn panic_is_reported_as_such() {
 fn panic_verbose() {
     // record current verbose backtrace to catch deviations
     let run_result = run("--chip nRF52840_xxAA tests/test_elfs/panic-rzcobs --verbose");
+
+    assert_eq!(false, run_result.exit_status.success());
+    insta::assert_snapshot!(run_result.output);
+}
+
+#[test]
+#[serial]
+// this test should not be run by default, as it requires the target hardware to be present
+#[ignore]
+fn hard_fault_is_reported_as_such() {
+    let run_result = run("--chip nRF52840_xxAA tests/test_elfs/udf");
 
     assert_eq!(false, run_result.exit_status.success());
     insta::assert_snapshot!(run_result.output);

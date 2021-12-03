@@ -1,0 +1,25 @@
+---
+source: tests/test.rs
+expression: run_result.output
+
+---
+(HOST) INFO  flashing program (2 pages / 8.00 KiB)
+(HOST) INFO  success!
+────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────
+stack backtrace:
+   0: HardFaultTrampoline
+      <exception entry>
+   1: lib::inline::__udf
+        at ./asm/inline.rs:172:5
+   2: __udf
+        at ./asm/lib.rs:49:17
+   3: cortex_m::asm::udf
+        at [cortex-m-0.7.3]/src/asm.rs:43:5
+   4: udf::__cortex_m_rt_main
+        at /Users/brigitte/Code/ferrous/knurling/udf-app/src/bin/udf.rs:8:5
+   5: main
+        at /Users/brigitte/Code/ferrous/knurling/udf-app/src/bin/udf.rs:6:1
+   6: Reset
+(HOST) ERROR the program hit a hard fault exception
+

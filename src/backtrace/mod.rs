@@ -107,7 +107,7 @@ impl Outcome {
                 log::error!("the program panicked");
             }
             Outcome::HardFault => {
-                log::error!("program hit a hard fault exception");
+                log::error!("the program hit a hard fault exception");
             }
             Outcome::Ok => {
                 log::info!("device halted without error");
