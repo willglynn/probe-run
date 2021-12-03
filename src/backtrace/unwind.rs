@@ -57,7 +57,6 @@ pub(crate) fn target(core: &mut Core, elf: &Elf, active_ram_region: &Option<RamR
 
     loop {
         if let Some(outcome) =
-            // udf {corrupted:true, outcome:probe_run::backtrace::Outcome::Ok, ...}
             check_hard_fault(pc, &elf.vector_table, &mut output, sp, active_ram_region)
         {
             output.outcome = outcome;
@@ -145,7 +144,6 @@ pub(crate) fn target(core: &mut Core, elf: &Elf, active_ram_region: &Option<RamR
     output
 }
 
-// hier unterscheidung udf panic
 fn check_hard_fault(
     pc: u32,
     vector_table: &cortexm::VectorTable,

@@ -89,8 +89,6 @@ pub(crate) fn print(
 
 /// Target program outcome
 #[derive(Clone, Copy, Debug, PartialEq)]
-
-// hier noch ein panic hinzufuegen
 pub(crate) enum Outcome {
     Panic,
     HardFault,
