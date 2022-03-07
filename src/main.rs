@@ -57,7 +57,8 @@ fn run_target_program(elf_path: &Path, chip_name: &str, opts: &cli::Opts) -> any
     }
     let target_info = TargetInfo::new(chip_name, elf)?;
 
-    let probe = probe::open(opts)?;
+    let mut probe = probe::open(opts)?;
+    probe.select_protocol(probe_rs::WireProtocol::Swd)?;
 
     let probe_target = target_info.probe_target.clone();
     let mut sess = if opts.connect_under_reset {
