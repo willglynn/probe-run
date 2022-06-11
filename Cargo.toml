@@ -37,3 +37,8 @@ pretty_assertions = "1"
 rstest = "0.11"
 nix = "0.23"
 serial_test = "0.5"
+
+[patch.crates-io]
+probe-rs = { git = 'https://github.com/willglynn/probe-rs', tag = 'v0.12.0-xmc4000' }
+
+
